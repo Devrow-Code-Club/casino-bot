@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=block" rel="stylesheet">
+
+  <title>Roulette Table</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      font-size: 35px;
+      margin: 0;
+      padding: 0;
+      font-family: 'Anton', fantasy;
+    }
+
+    #container {
+      padding: 8px;
+      background-color: darkgreen;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #table {
+      aspect-ratio: 9 / 3;
+      width: 90%;
+      display: grid;
+      grid-template-columns: 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 40px;
+      grid-template-rows: 80px 80px 80px 40px 40px;
+      place-items: center;
+    }
+
+    span {
+      color: white;
+      border: 1px solid white;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      text-shadow: 0 0 3px black;
+    }
+
+    [red] {
+      color: red;
+    }
+
+    [black] {
+      color: black;
+      text-shadow: 0 0 1px black;
+    }
+
+    #zero {
+      grid-row: 1 / 4;
+      border-radius: 80% 0 0 80%
+    }
+
+    i {
+      white-space: nowrap;
+      font-style: normal;
+    }
+
+    .vert-text {
+      transform: rotate(-90deg) translate(-40%, -50%);
+      position: absolute;
+    }
+
+    .smol-text {
+      font-size: 0.5em;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='container'>
+    <div id='table'>
+      <span id='zero'>0</span>
+      <span red>3</span>
+      <span black>6</span>
+      <span red>9</span>
+      <span red>12</span>
+      <span black>15</span>
+      <span red>18</span>
+      <span red>21</span>
+      <span black>24</span>
+      <span red>27</span>
+      <span red>30</span>
+      <span black>33</span>
+      <span red>36</span>
+      <span><i class='vert-text smol-text'>column 3</i></span>
+
+      <span black>2</span>
+      <span red>5</span>
+      <span black>8</span>
+      <span black>11</span>
+      <span red>14</span>
+      <span black>17</span>
+      <span black>20</span>
+      <span red>23</span>
+      <span black>26</span>
+      <span black>29</span>
+      <span red>32</span>
+      <span black>35</span>
+      <span><i class='vert-text smol-text'>column 2</i></span>
+      <span red>1</span>
+      <span black>4</span>
+      <span red>7</span>
+      <span black>10</span>
+      <span black>13</span>
+      <span red>16</span>
+      <span red>19</span>
+      <span black>22</span>
+      <span red>25</span>
+      <span black>28</span>
+      <span black>31</span>
+      <span red>34</span>
+      <span><i class='vert-text smol-text'>column 1</i></span>
+      <b></b>
+      <span class='smol-text' style='grid-column: 2 / 6'>dozen 1</span>
+      <span class='smol-text' style='grid-column: 6 / 10'>dozen 2</span>
+      <span class='smol-text' style='grid-column: 10 / 14'>dozen 3</span>
+      <b></b>
+      <span class='smol-text' style='grid-column: 2 / 4'>half 1</span>
+      <span class='smol-text' style='grid-column: 4 / 6'>even</span>
+      <span class='smol-text' red style='grid-column: 6 / 8'>red</span>
+      <span class='smol-text' black style='grid-column: 8 / 10'>black</span>
+      <span class='smol-text' style='grid-column: 10 / 12'>odd</span>
+      <span class='smol-text' style='grid-column: 12 / 14'>half 2</span>
+    </div>
+  </div>
+</body>
+
+</html>

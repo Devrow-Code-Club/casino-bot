@@ -1,0 +1,23 @@
+{
+  "name": "discord-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "pm2 start ecosystem.json",
+    "stop": "pm2 stop ecosystem.json",
+    "restart": "pm2 restart ecosystem.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.7.0",
+    "discord.io": "^2.5.3",
+    "discord.js": "^12.5.1",
+    "puppeteer-core": "^8.0.0",
+    "stocksocket": "^1.2.0"
+  }
+}
