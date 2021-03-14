@@ -1,4 +1,4 @@
-import { oneOf } from './utils.js';
+import { oneOf, sum } from './utils.js';
 import canvas from 'canvas';
 const { createCanvas, loadImage } = canvas;
 
@@ -138,7 +138,6 @@ class BlackJackPlayer {
 
   get cardTotal() {
     if (!this.cards) return 0;
-    const sum = (a, c) => a + c;
     const cardsNumberized = this.cards.map(card => Number(card.match(/\d?\d?\w?/)[0].replace(/[jqk]/ig, '10').replace(/a/ig, '11')))
     let total = cardsNumberized.reduce(sum);
     while (total > 21 && cardsNumberized.includes(11)) {
