@@ -53,10 +53,11 @@ bot.on('ready', async () => {
     StockSocket.addTickers(["GME"], stockPresenceChanged);
   }
   if (DEV_MODE) {
-    bot.user.setPresence({ activity: { name: 'maintenance', type: 1 }, status: 'dnd' })
+    bot.user.setPresence({ activity: { name: 'maintenance', type: 1 }, status: 'dnd' });
+    console.table(process.env);
   }
   else {
-    bot.user.setPresence({ activity: { name: 'casino games', type: 1 }, status: 'idle' })
+    bot.user.setPresence({ activity: { name: 'casino games', type: 1 }, status: 'idle' });
   }
 });
 
