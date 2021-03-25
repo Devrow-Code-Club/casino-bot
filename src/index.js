@@ -68,7 +68,7 @@ bot.on('message', async ({ channel, author, mentions, content, guild }) => {
 
   if (DEV_MODE && serverId !== process.env.TESTSERVER) return channel.send(`Sorry, we are closed right now.`);
 
-  if (!games[serverId]) games[serverId] = {};
+  if (!games[serverId]) games[serverId] = { wagers: {} };
 
   const authorMention = `<@${author.id}>`;
 
@@ -450,7 +450,6 @@ ${games[serverId].blackjack.players.map(player => `<@${player.id}>`).join("\n")}
     }
   }
   if (content.startsWith('!wager ')) {
-    if (!games[serverId].wagers) games[serverId].wagers = {};
     const [, wagerid] = content.match(/^!wager "(.+?)"/) || [, false];
     if (!wagerid) return channel.send(`Please start with a wagerid (\`!wager "{wagerid}" command ...\`) to make or interact with a wager, ${authorMention}. Learn more with \`!wager help\`.`);
     if (!games[serverId].wagers[wagerid]) {
