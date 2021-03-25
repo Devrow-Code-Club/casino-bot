@@ -9,6 +9,7 @@ import { format } from './utils.js';
 
 const DEV_MODE = true;
 const BJ_DOWN = false;
+const ROULETTE_DOWN = false;
 const enableStonks = false;
 const DBLOC = './db/db.json';
 const games = {};
@@ -64,6 +65,9 @@ bot.on('ready', async () => {
 bot.on('message', async ({ channel, author, mentions, content, guild }) => {
   if (author.id === bot.user.id || !/ca[sn]i[ns]o/.test(channel.name)) return;
   const serverId = channel.guild.id;
+
+  if (DEV_MODE && serverId !== process.env.TESTSERVER) return channel.send(`Sorry, we are closed right now.`);
+
   if (!games[serverId]) games[serverId] = {};
 
   const authorMention = `<@${author.id}>`;
@@ -130,7 +134,7 @@ ${Object.entries(jsonDB[serverId].houseStats).map(([stat, value]) => isNaN(value
   if (content.startsWith('/roulette ') || content.startsWith('!roulette ') || content.startsWith('!r ')) {
     const rouletteCommands = content.split('\n');
     for (const command of rouletteCommands) {
-      if (DEV_MODE && serverId !== process.env.TESTSERVER) return channel.send(`Sorry, we are closed right now.`);
+      if (ROULETTE_DOWN && serverId !== process.env.TESTSERVER) return channel.send(`Sorry, roulette is closed right now.`);
       if (command.includes(' table')) {
         // const browser = await initBrowser();
         // const page = await browser.newPage();
