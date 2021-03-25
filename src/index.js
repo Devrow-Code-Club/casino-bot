@@ -3,10 +3,9 @@ import { promises as fs } from 'fs';
 import process from 'process';
 
 import { BlackJack } from './blackjack.js';
-import { WagerHandler } from './handlers/wager.handler.js';
+import { Wager } from './gameObjects/wager.js';
 import { Roulette } from './roulette.js';
-
-const format = (num) => new Intl.NumberFormat().format(num)
+import { format } from './utils.js';
 
 const DEV_MODE = true;
 const BJ_DOWN = false;
@@ -25,7 +24,7 @@ const initBrowser = async () => {
 }
 
 const notifyWinners = (winners) => {
-  return `${winners.map(winner => `<@${winner.id}> wins \`${winner.blackjack ? `${format(winner.bet * 1.5)} with a blackjack!` : format(winner.bet)}\``).join('\n')}`
+  return `${winners.map(winner => `<@${winner.id}> wins ${winner.blackjack ? `${format(winner.bet * 1.5)} with a blackjack!` : format(winner.bet)}`).join('\n')}`
 }
 
 const notifyLosers = (losers) => {
@@ -38,10 +37,6 @@ const notifyStandoffs = (standoffs) => {
 
 const bot = new Discord.Client();
 const globalListener = new EventTarget();
-
-const handlers = {
-  wager: new WagerHandler()
-}
 
 bot.on('ready', async () => {
   console.log('ready');
@@ -72,7 +67,7 @@ bot.on('message', async ({ channel, author, mentions, content, guild }) => {
 
   const authorMention = `<@${author.id}>`;
 
-  if (!jsonDB[serverId]) jsonDB[serverId] = {};
+  if (!jsonDB[serverId]) jsonDB[serverId] = { wagers: {} };
   if (!jsonDB[serverId][author.id]) jsonDB[serverId][author.id] = { balance: 1000 };
   if (!jsonDB[serverId][author.id].totals) jsonDB[serverId][author.id].totals = { winAmount: 0, wins: 0, betAmount: 0, bets: 0, loans: 0, loanAmount: jsonDB[serverId][author.id].loan || 0, loanPaid: 0, highestBalance: jsonDB[serverId][author.id].balance, largestBet: 0, largestWin: 0, largestLoanBalance: jsonDB[serverId][author.id].loan || 0 };
   if (!jsonDB[serverId].houseStats) jsonDB[serverId].houseStats = { payouts: 0, income: 0, betTypes: {}, totalBets: 0, totalBetAmount: 0, loanAmount: 0, loans: 0, loanAmountPaid: 0 };
@@ -84,8 +79,8 @@ To play roulette: !roulette [command]
 !roulette help
 More games coming soon!`)
   if (content.startsWith('/balance') || content.startsWith('!balance')) {
-    channel.send(`${authorMention} your balance is: \`${format(jsonDB[serverId][author.id].balance || 0)}\` devrowcoins`);
-    if (jsonDB[serverId][author.id].loan) channel.send(`And I would like to remind you ${authorMention} that you owe me \`${format(jsonDB[serverId][author.id].loan)}\` devrowcoins`)
+    channel.send(`${authorMention} your balance is: ${format(jsonDB[serverId][author.id].balance || 0)} devrowcoins`);
+    if (jsonDB[serverId][author.id].loan) channel.send(`And I would like to remind you ${authorMention} that you owe me ${format(jsonDB[serverId][author.id].loan)} devrowcoins`)
     return;
   }
   if (content.startsWith('/loan') || content.startsWith('!loan')) {
@@ -121,13 +116,13 @@ Excellent! Here is your _loan_ of \`1000\` devrowcoins.`)
     if (content.includes(' self')) {
       return channel.send(`Sure ${authorMention} here are your stats:
 \`\`\`
-${Object.entries(jsonDB[serverId][author.id].totals).map(([stat, value]) => `${stat}${'.'.repeat(18 - stat.length + 12 - (format(value)).length)}${format(value)}`).join('\n')}
+${Object.entries(jsonDB[serverId][author.id].totals).map(([stat, value]) => `${stat}${'.'.repeat(18 - stat.length + 12 - (format(value, true)).length)}${format(value, true)}`).join('\n')}
 \`\`\`
 `);
     }
     return channel.send(`Sure ${authorMention} here are the server stats:
 \`\`\`
-${Object.entries(jsonDB[serverId].houseStats).map(([stat, value]) => isNaN(value) ? false : `${stat}${'.'.repeat(18 - stat.length + 12 - (format(value)).length)}${format(value)}`).filter(n => Boolean(n)).join('\n')}
+${Object.entries(jsonDB[serverId].houseStats).map(([stat, value]) => isNaN(value) ? false : `${stat}${'.'.repeat(18 - stat.length + 12 - (format(value, true)).length)}${format(value, true)}`).filter(n => Boolean(n)).join('\n')}
 \`\`\`
 `);
   }
@@ -159,7 +154,7 @@ ${Object.entries(jsonDB[serverId].houseStats).map(([stat, value]) => isNaN(value
       if (command.includes(' stats')) {
         return channel.send(`Sure ${authorMention} here are the server stats:
 \`\`\`
-${Object.entries(jsonDB[serverId].houseStats.betTypes).map(([betType, { wins, losses }]) => `${betType}${'.'.repeat(10 - betType.length + 12 - (format(wins)).length)}${format(wins)}/${format(wins + losses)} - ${Math.round(100 * (wins / (wins + losses)))}%`).join('\n')}
+${Object.entries(jsonDB[serverId].houseStats.betTypes).map(([betType, { wins, losses }]) => `${betType}${'.'.repeat(10 - betType.length + 12 - (format(wins, true)).length)}${format(wins, true)}/${format(wins + losses, true)} - ${Math.round(100 * (wins / (wins + losses)))}%`).join('\n')}
 \`\`\`
 `);
       }
@@ -208,7 +203,7 @@ ${Object.entries(jsonDB[serverId].houseStats.betTypes).map(([betType, { wins, lo
                 jsonDB[serverId].houseStats.betTypes[betType].losses++;
               }
             }
-            if (Object.entries(winners).length > 0) await channel.send(`${Object.entries(winners).map(([playerid, { amount, betTypes }]) => `<@${playerid}> wins \`${format(amount)}\` with \`[${Array.from(betTypes).join(', ')}]\``).join('\n')}`);
+            if (Object.entries(winners).length > 0) await channel.send(`${Object.entries(winners).map(([playerid, { amount, betTypes }]) => `<@${playerid}> wins ${format(amount)} with \`[${Array.from(betTypes).join(', ')}]\``).join('\n')}`);
             if (Object.entries(losers).length > 0) await channel.send(`${Object.entries(losers).map(([playerid, { betTypes }]) => `<@${playerid}> loses with \`[${Array.from(betTypes).join(', ')}]\``).join('\n')}`);
 
             delete games[serverId].roulette
@@ -225,9 +220,9 @@ ${Object.entries(jsonDB[serverId].houseStats.betTypes).map(([betType, { wins, lo
           jsonDB[serverId].houseStats.totalBetAmount += Number(amount);
           jsonDB[serverId][author.id].totals.largestBet = Math.max(jsonDB[serverId][author.id].totals.largestBet, Number(amount));
           if (!games[serverId].roulette.playerMessages[author.id].bets)
-            games[serverId].roulette.playerMessages[author.id].bets = await channel.send(`${authorMention} I have you for \`${betType}${bet ? ` on ${bet}` : ''}\` for \`${format(Number(amount))}\`.`);
+            games[serverId].roulette.playerMessages[author.id].bets = await channel.send(`${authorMention} I have you for \`${betType}${bet ? ` on ${bet}` : ''}\` for ${format(Number(amount))}.`);
           else
-            games[serverId].roulette.playerMessages[author.id].bets = await games[serverId].roulette.playerMessages[author.id].bets.edit(`${games[serverId].roulette.playerMessages[author.id].bets.content}\nAnd \`${betType}${bet ? ` on ${bet}` : ''}\` for \`${format(Number(amount))}\`.`)
+            games[serverId].roulette.playerMessages[author.id].bets = await games[serverId].roulette.playerMessages[author.id].bets.edit(`${games[serverId].roulette.playerMessages[author.id].bets.content}\nAnd \`${betType}${bet ? ` on ${bet}` : ''}\` for ${format(Number(amount))}.`)
           if (!jsonDB[serverId].houseStats.betTypes[betType]) jsonDB[serverId].houseStats.betTypes[betType] = { times: 0, wins: 0, losses: 0 }
           jsonDB[serverId].houseStats.betTypes[betType].times++;
 
@@ -450,8 +445,17 @@ ${games[serverId].blackjack.players.map(player => `<@${player.id}>`).join("\n")}
     }
   }
   if (content.startsWith('!wager ')) {
-    const command = handlers.wager.parse(content);
-    channel.send(`This is what I got: ${JSON.stringify(command, '', 2)}`)
+    if (!games[serverId].wagers) games[serverId].wagers = {};
+    const [, wagerid] = content.match(/^!wager "(.+?)"/);
+    if (!games[serverId].wagers[wagerid]) {
+      games[serverId].wagers[wagerid] = new Wager(wagerid, jsonDB[serverId].wagers[wagerid]);
+    }
+    const result = await games[serverId].wagers[wagerid].handle({ content, channel, author });
+
+    if (result) {
+      jsonDB[serverId].wagers[wagerid] = games[serverId].wagers[wagerid].serialized;
+      fs.writeFile(DBLOC, JSON.stringify(jsonDB));
+    }
   }
 });
 bot.login(process.env.BOTID)
