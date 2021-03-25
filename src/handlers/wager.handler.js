@@ -1,6 +1,7 @@
 export class WagerHandler extends EventTarget {
   parse(content) {
-    const [, wagerid, args] = content.match(/^!wager \"(.+?)\" (.+)/ig);
+    const [, wagerid, args] = content.match(/^!wager \"(.+?)\" (.+)/ig) || [false, false, false];
+    if (!wagerid) return { command: "message", message: "Sorry USER_ID, I'm not sure what wager you are talking about." }
     // SAMPLE: !wager "wagerid" bet 1000 "option" 
     if (args.includes('bet ')) {
       args.replace('bet ', '');
