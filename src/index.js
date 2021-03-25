@@ -451,7 +451,8 @@ ${games[serverId].blackjack.players.map(player => `<@${player.id}>`).join("\n")}
   }
   if (content.startsWith('!wager ')) {
     if (!games[serverId].wagers) games[serverId].wagers = {};
-    const [, wagerid] = content.match(/^!wager "(.+?)"/);
+    const [, wagerid] = content.match(/^!wager "(.+?)"/) || [, false];
+    if (!wagerid) return channel.send(`Please start with a wagerid (\`!wager "{wagerid}" command ...\`) to make or interact with a wager, ${authorMention}. Learn more with \`!wager help\`.`);
     if (!games[serverId].wagers[wagerid]) {
       games[serverId].wagers[wagerid] = new Wager(wagerid, jsonDB[serverId].wagers[wagerid]);
     }
