@@ -3,11 +3,12 @@ import { promises as fs } from 'fs';
 import process from 'process';
 
 import { BlackJack } from './blackjack.js';
+import { WagerHandler } from './handlers/wager.handler.js';
 import { Roulette } from './roulette.js';
 
 const format = (num) => new Intl.NumberFormat().format(num)
 
-const DEV_MODE = false;
+const DEV_MODE = true;
 const BJ_DOWN = false;
 const enableStonks = false;
 const DBLOC = './db/db.json';
@@ -36,6 +37,11 @@ const notifyStandoffs = (standoffs) => {
 }
 
 const bot = new Discord.Client();
+const globalListener = new EventTarget();
+
+const handlers = {
+  wager: new WagerHandler()
+}
 
 bot.on('ready', async () => {
   console.log('ready');
@@ -442,6 +448,10 @@ ${games[serverId].blackjack.players.map(player => `<@${player.id}>`).join("\n")}
       fs.writeFile(DBLOC, JSON.stringify(jsonDB));
       return delete games[serverId].blackjack;
     }
+  }
+  if (content.startsWith('!wager ')) {
+    const command = handlers.wager.parse(content);
+    channel.send(`This is what I got: ${JSON.stringify(command, '', 2)}`)
   }
 });
 bot.login(process.env.BOTID)
