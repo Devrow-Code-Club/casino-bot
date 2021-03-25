@@ -11,9 +11,14 @@ export class Wager {
   }
 
   async handle({ content, channel, author }) {
-    const [, wagerid, args] = content.match(/^!wager \"(.+?)\" (.+)/ig) || [false, false, false];
+    const [, wagerid, args] = content.match(/!wager \"(.+?)\" (.+)/ig) || [false, false, false];
+    console.table({ content, wagerid, args });
     if (!wagerid) {
       channel.send(`Sorry ${mention(author.id)}, I'm not sure what wager you are talking about.`);
+      return false;
+    }
+    if (!args) {
+      channel.send(`And what do you want to do with "${wagerid}", ${mention(author.id)}?`);
       return false;
     }
     // SAMPLE: !wager "wagerid" bet 1000 "option" 
