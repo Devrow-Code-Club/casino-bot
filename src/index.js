@@ -54,7 +54,7 @@ bot.on('ready', async () => {
   }
   if (DEV_MODE) {
     bot.user.setPresence({ activity: { name: 'maintenance', type: 1 }, status: 'dnd' });
-    console.table(process.env);
+    console.table({ BOTID: process.env.BOTID, TESTSERVER: process.env.TESTSERVER });
   }
   else {
     bot.user.setPresence({ activity: { name: 'casino games', type: 1 }, status: 'idle' });
