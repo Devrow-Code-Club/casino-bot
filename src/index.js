@@ -63,7 +63,7 @@ bot.on('ready', async () => {
 });
 
 bot.on('message', async ({ channel, author, mentions, content, guild }) => {
-  if (author.id === bot.user.id || !/ca[sn]i[ns]o/.test(channel.name)) return;
+  if (author.id === bot.user.id || !/ca[sn]i[ns]o/.test(channel.name) || !content.startsWith("!")) return;
   const serverId = channel.guild.id;
 
   if (DEV_MODE && serverId !== process.env.TESTSERVER) return channel.send(`Sorry, we are closed right now.`);
