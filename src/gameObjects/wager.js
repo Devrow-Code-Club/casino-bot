@@ -24,10 +24,11 @@ export class Wager {
 
       const stream = encoder.createReadStream();
 
-      encoder.start();
       encoder.setRepeat(-1);   // 0 for repeat, -1 for no-repeat
       encoder.setDelay(500);  // frame delay in ms
       encoder.setQuality(10);
+
+      encoder.start();
 
       const canvas = createCanvas(320, 240);
       const ctx = canvas.getContext('2d');
@@ -47,9 +48,12 @@ export class Wager {
 
       encoder.finish();
 
+      const buffer = encoder.out.getData();
+      console.log(buffer);
+
       channel.send([`here is a test`, {
         files: [{
-          attachment: encoder.out.getData(),
+          attachment: buffer,
           name: 'player-cards.jpg'
         }]
       }]);
