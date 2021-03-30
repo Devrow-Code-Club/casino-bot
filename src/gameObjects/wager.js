@@ -47,12 +47,12 @@ export class Wager {
 
       encoder.finish();
 
-      console.log(stream);
-      console.log(encoder);
+      // console.log(stream);
+      // console.log(encoder);
 
       channel.send([`here is a test`, {
         files: [{
-          attachment: stream,
+          attachment: encoder.image,
           name: 'player-cards.jpg'
         }]
       }]);
