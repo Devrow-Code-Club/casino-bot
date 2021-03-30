@@ -11,11 +11,8 @@ export class Wager {
   }
 
   async handle({ content, channel, author }) {
-    console.table({ content });
     const match = content.match(/\!wager \"(.+?)\"/);
-    console.log({ match });
-    const [, wagerid, argsUntrimmed] = match;
-    console.table({ wagerid, argsUntrimmed });
+    const [, wagerid] = match;
     if (!wagerid) {
       channel.send(`Sorry ${mention(author.id)}, I'm not sure what wager you are talking about.`);
       return false;
@@ -24,7 +21,10 @@ export class Wager {
       channel.send(`And what do you want to do with "${wagerid}", ${mention(author.id)}?`);
       return false;
     }
-    const args = argsUntrimmed.trim();
+    const commandMatch = content.match(new RegExp(`\"${wagerid}\" (.+?) `));
+    const [, command] = commandMatch;
+
+    console.table({ content, wagerid, command });
     // SAMPLE: !wager "wagerid" bet 1000 "option" 
     if (args.includes('bet ')) {
       args.replace('bet ', '');
@@ -44,5 +44,6 @@ export class Wager {
       args.replace('declare ', '');
       const options = args.split(`" "`).map(option => option.replace(`"`, ''));
     }
+    return channel.send(`I'm sorry, I don't recognize that command ${mention(author.id)}.`);
   }
 }
