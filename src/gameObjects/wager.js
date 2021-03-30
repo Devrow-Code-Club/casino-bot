@@ -1,5 +1,5 @@
 import { mention, format } from '../utils.js';
-import GIFEncoder from 'gifencoder';
+import GIFEncoder from 'gif-encoder-2';
 import canvas from 'canvas';
 const { createCanvas, loadImage } = canvas;
 
@@ -47,12 +47,9 @@ export class Wager {
 
       encoder.finish();
 
-      // console.log(stream);
-      // console.log(encoder);
-
       channel.send([`here is a test`, {
         files: [{
-          attachment: encoder.image,
+          attachment: encoder.out.getData(),
           name: 'player-cards.jpg'
         }]
       }]);
