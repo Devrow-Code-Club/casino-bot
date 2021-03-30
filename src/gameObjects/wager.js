@@ -45,6 +45,10 @@ export class Wager {
       ctx.fillRect(0, 0, 320, 240);
       encoder.addFrame(ctx);
 
+      encoder.finish();
+
+      console.log(stream);
+      console.log(encoder);
 
       channel.send([`here is a test`, {
         files: [{
