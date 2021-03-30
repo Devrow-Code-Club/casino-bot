@@ -11,9 +11,11 @@ export class Wager {
   }
 
   async handle({ content, channel, author }) {
+    console.table({ content });
     const match = content.match(/\!wager \"(.+?)\"/ig);
+    console.log({ match });
     const [, wagerid, argsUntrimmed] = match;
-    console.table({ match, content, wagerid, argsUntrimmed });
+    console.table({ wagerid, argsUntrimmed });
     if (!wagerid) {
       channel.send(`Sorry ${mention(author.id)}, I'm not sure what wager you are talking about.`);
       return false;
