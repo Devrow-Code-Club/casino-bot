@@ -20,6 +20,9 @@ export class Wager {
     const [, wagerid, argsUntrimmed] = match;
     console.table({ match, content, wagerid, argsUntrimmed });
     if (!wagerid) {
+      const encoder = new GIFEncoder(320, 240);
+
+      const stream = encoder.createReadStream();
 
       encoder.start();
       encoder.setRepeat(-1);   // 0 for repeat, -1 for no-repeat
@@ -45,7 +48,7 @@ export class Wager {
 
       channel.send([`here is a test`, {
         files: [{
-          attachment: encoder.finish(),
+          attachment: stream,
           name: 'player-cards.jpg'
         }]
       }]);
