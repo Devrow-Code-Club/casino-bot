@@ -48,13 +48,12 @@ export class Wager {
 
       encoder.finish();
 
-      const buffer = encoder.out.getData();
-      console.log(buffer);
+      console.log(stream);
 
       channel.send([`here is a test`, {
         files: [{
-          attachment: buffer,
-          name: 'player-cards.jpg'
+          attachment: stream,
+          name: 'player-cards.gif'
         }]
       }]);
       return false;
