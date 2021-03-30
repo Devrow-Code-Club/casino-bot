@@ -22,7 +22,7 @@ export class Wager {
     if (!wagerid) {
       const encoder = new GIFEncoder(320, 240);
 
-      encoder.setRepeat(-1);   // 0 for repeat, -1 for no-repeat
+      encoder.setRepeat(0);   // 0 for repeat, -1 for no-repeat
       encoder.setDelay(500);  // frame delay in ms
       encoder.setQuality(10);
 
