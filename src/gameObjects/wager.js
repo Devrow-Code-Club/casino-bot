@@ -17,12 +17,13 @@ export class Wager {
       channel.send(`Sorry ${mention(author.id)}, I'm not sure what wager you are talking about.`);
       return false;
     }
-    if (!argsUntrimmed) {
+    const commandMatch = content.match(new RegExp(`\"${wagerid}\" (.+?) `));
+    const [, command] = commandMatch;
+
+    if (!command) {
       channel.send(`And what do you want to do with "${wagerid}", ${mention(author.id)}?`);
       return false;
     }
-    const commandMatch = content.match(new RegExp(`\"${wagerid}\" (.+?) `));
-    const [, command] = commandMatch;
 
     console.table({ content, wagerid, command });
     // SAMPLE: !wager "wagerid" bet 1000 "option" 
