@@ -17,6 +17,7 @@
     "canvas": "^2.7.0",
     "discord.io": "^2.5.3",
     "discord.js": "^12.5.1",
+    "gifencoder": "^2.0.1",
     "puppeteer-core": "^8.0.0",
     "stocksocket": "^1.2.0"
   }
