@@ -11,7 +11,7 @@ export class Wager {
   }
 
   async handle({ content, channel, author }) {
-    const match = content.match(/\!wager \"(.+?)\"/ig) || [false, false, false];
+    const match = content.match(/\!wager \"(.+?)\"/ig);
     const [, wagerid, argsUntrimmed] = match;
     console.table({ match, content, wagerid, argsUntrimmed });
     if (!wagerid) {
