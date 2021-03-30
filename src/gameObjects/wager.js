@@ -1,9 +1,4 @@
 import { mention, format } from '../utils.js';
-import GIFEncoder from 'gif-encoder-2';
-import canvas from 'canvas';
-const { createCanvas, loadImage } = canvas;
-
-const encoder = new GIFEncoder(320, 240);
 
 export class Wager {
   constructor(id) {
@@ -20,41 +15,7 @@ export class Wager {
     const [, wagerid, argsUntrimmed] = match;
     console.table({ match, content, wagerid, argsUntrimmed });
     if (!wagerid) {
-      const encoder = new GIFEncoder(320, 240);
-
-      encoder.setRepeat(0);   // 0 for repeat, -1 for no-repeat
-      encoder.setDelay(500);  // frame delay in ms
-      encoder.setQuality(10);
-
-      encoder.start();
-
-      const canvas = createCanvas(320, 240);
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#ff0000';
-      ctx.fillRect(0, 0, 320, 240);
-      encoder.addFrame(ctx);
-
-      // green rectangle
-      ctx.fillStyle = '#00ff00';
-      ctx.fillRect(0, 0, 320, 240);
-      encoder.addFrame(ctx);
-
-      // blue rectangle
-      ctx.fillStyle = '#0000ff';
-      ctx.fillRect(0, 0, 320, 240);
-      encoder.addFrame(ctx);
-
-      encoder.finish();
-
-      const buffer = encoder.out.getData();
-      console.log(buffer);
-
-      channel.send([`here is a test`, {
-        files: [{
-          attachment: buffer,
-          name: 'player-cards.gif'
-        }]
-      }]);
+      channel.send(`Sorry ${mention(author.id)}, I'm not sure what wager you are talking about.`);
       return false;
     }
     if (!argsUntrimmed) {
