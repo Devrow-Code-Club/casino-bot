@@ -7,7 +7,7 @@ import { Wager } from './gameObjects/wager.js';
 import { Roulette } from './roulette.js';
 import { format } from './utils.js';
 
-const DEV_MODE = true;
+const DEV_MODE = false;
 const BJ_DOWN = false;
 const ROULETTE_DOWN = false;
 const enableStonks = false;

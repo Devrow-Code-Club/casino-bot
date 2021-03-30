@@ -17,7 +17,7 @@ export class Wager {
       channel.send(`Sorry ${mention(author.id)}, I'm not sure what wager you are talking about.`);
       return false;
     }
-    const commandMatch = content.match(new RegExp(`\"${wagerid}\" (.+?) `)) || [];
+    const commandMatch = content.match(new RegExp(`\"${wagerid}\" (bet|winner|declare)`)) || [];
     const [, command] = commandMatch;
 
     if (!command) {
@@ -27,6 +27,7 @@ export class Wager {
 
     console.table({ content, wagerid, command });
     // SAMPLE: !wager "wagerid" bet 1000 "option" 
+    this[command](content);
     if (args.includes('bet ')) {
       args.replace('bet ', '');
       const [, amount, option] = args.match(/(\d+) \"(.+?)\"/);
