@@ -163,11 +163,9 @@ class BlackJackPlayer {
   }
 
   async sendCards() {
-    const cards = await this.displayCards();
-    console.log(cards);
     return [`<@${this.id}> cards: (\`${this.cardTotal}\`)`, {
       files: [{
-        attachment: cards,
+        attachment: await this.displayCards(),
         name: 'player-cards.jpg'
       }]
     }]

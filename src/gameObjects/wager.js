@@ -22,8 +22,6 @@ export class Wager {
     if (!wagerid) {
       const encoder = new GIFEncoder(320, 240);
 
-      const stream = encoder.createReadStream();
-
       encoder.setRepeat(-1);   // 0 for repeat, -1 for no-repeat
       encoder.setDelay(500);  // frame delay in ms
       encoder.setQuality(10);
@@ -48,11 +46,12 @@ export class Wager {
 
       encoder.finish();
 
-      console.log(stream);
+      const buffer = encoder.out.getData();
+      console.log(buffer);
 
       channel.send([`here is a test`, {
         files: [{
-          attachment: stream,
+          attachment: buffer,
           name: 'player-cards.gif'
         }]
       }]);
