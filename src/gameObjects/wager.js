@@ -11,13 +11,13 @@ export class Wager {
   }
 
   async handle({ content, channel, author }) {
-    const match = content.match(/\!wager \"(.+?)\"/);
+    const match = content.match(/\!wager \"(.+?)\"/) || [];
     const [, wagerid] = match;
     if (!wagerid) {
       channel.send(`Sorry ${mention(author.id)}, I'm not sure what wager you are talking about.`);
       return false;
     }
-    const commandMatch = content.match(new RegExp(`\"${wagerid}\" (.+?) `));
+    const commandMatch = content.match(new RegExp(`\"${wagerid}\" (.+?) `)) || [];
     const [, command] = commandMatch;
 
     if (!command) {
