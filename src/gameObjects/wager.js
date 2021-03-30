@@ -12,7 +12,7 @@ export class Wager {
 
   async handle({ content, channel, author }) {
     console.table({ content });
-    const match = content.match(/\!wager (.+?)/ig);
+    const match = content.match(/\!wager \"(.+?)\"/);
     console.log({ match });
     const [, wagerid, argsUntrimmed] = match;
     console.table({ wagerid, argsUntrimmed });
