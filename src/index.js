@@ -58,8 +58,9 @@ bot.on('ready', async () => {
     console.table({ BOTID: process.env.BOTID, TESTSERVER: process.env.TESTSERVER });
   }
   else {
-    bot.user.edit({ username: 'the Ancient Casino', avatar: './images/avatar.png' });
     bot.user.setPresence({ activity: { name: 'casino games', type: 1 }, status: 'idle' });
+    bot.user.edit({ username: 'the Ancient Casino', avatar: './images/avatar.png' });
+    console.table(bot.user);
   }
 });
 
