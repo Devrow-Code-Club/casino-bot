@@ -59,7 +59,7 @@ bot.on('ready', async () => {
   }
   else {
     bot.user.setPresence({ activity: { name: 'casino games', type: 1 }, status: 'idle' });
-    bot.user.setAvatar('./images/avatar.png');
+    bot.user.setAvatar('./src/images/avatar.png');
   }
 });
 
