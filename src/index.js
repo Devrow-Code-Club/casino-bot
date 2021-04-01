@@ -59,8 +59,7 @@ bot.on('ready', async () => {
   }
   else {
     bot.user.setPresence({ activity: { name: 'casino games', type: 1 }, status: 'idle' });
-    bot.user.edit({ username: 'the Ancient Casino', avatar: './images/avatar.png' });
-    console.table(bot.user);
+    bot.user.setAvatar('./images/avatar.png');
   }
 });
 
