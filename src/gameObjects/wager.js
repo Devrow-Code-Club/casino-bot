@@ -14,7 +14,7 @@ export class Wager {
   async bet({ content, author, channel }) {
     // example: !wager "wagerName" bet 1000 "option"
     console.table(this.bets);
-    const currentBet = this.bets.find(bet => bet.user === author.id);
+    const currentBet = this.bets.find(bet => bet.userid === author.id);
     if (currentBet) {
       channel.send(`:suspicious_eyes: You already have a bet on this wager, remember? You wagered ${format(currentBet.amount)} on "${currentBet.choice}".`);
       return false;
