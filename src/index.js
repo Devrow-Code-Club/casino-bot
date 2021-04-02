@@ -78,6 +78,8 @@ bot.on('message', async ({ channel, author, mentions, content, guild }) => {
   if (!jsonDB[serverId][author.id].totals) jsonDB[serverId][author.id].totals = { winAmount: 0, wins: 0, betAmount: 0, bets: 0, loans: 0, loanAmount: jsonDB[serverId][author.id].loan || 0, loanPaid: 0, highestBalance: jsonDB[serverId][author.id].balance, largestBet: 0, largestWin: 0, largestLoanBalance: jsonDB[serverId][author.id].loan || 0 };
   if (!jsonDB[serverId].houseStats) jsonDB[serverId].houseStats = { payouts: 0, income: 0, betTypes: {}, totalBets: 0, totalBetAmount: 0, loanAmount: 0, loans: 0, loanAmountPaid: 0 };
 
+  author.state = jsonDB[serverId][author.id];
+
   if (content.startsWith('/casino help') || content.startsWith('!casino help')) channel.send(`To view your devrowcoin balance: !balance
 If you run out of devrowcoins: !loan
 To pay back your loan: !loan pay [amount]
