@@ -24,6 +24,10 @@ export class Wager {
       return false;
     }
     const [, amountString, choice] = match;
+    if (!this.options.length) {
+      channel.send(`:clenched: This doesn't appear to be a current wager.`)
+      return false;
+    }
     if (!this.options.includes(choice)) {
       channel.send(`:eyes: I don't see that option ${mention(author.id)}. Valid options for this wager are "${this.options.join(`", "`)}"`);
       return false;
@@ -52,12 +56,13 @@ export class Wager {
     const commandMatch = content.match(new RegExp(`\"${wagerid}\" (bet|winner|declare)`)) || [];
     const [, command] = commandMatch;
 
+    console.table({ content, wagerid, command });
+
     if (!command) {
       channel.send(`:suspicious_eyes: And what do you want to do with "${wagerid}", ${mention(author.id)}?`);
       return false;
     }
 
-    console.table({ content, wagerid, command });
 
     return this[command]({ content, author, channel });
 
