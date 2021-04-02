@@ -18,7 +18,7 @@ export class Wager {
       channel.send(`:suspicious_eyes: You already have a bet on this wager, remember? You wagered ${format(currentBet.amount)} on "${currentBet.choice}".`);
       return false;
     }
-    const match = content.match(/bet (-?\d+?) \"(.+?)\"/);
+    const match = content.match(/bet\s+(-?\d+?)\s+\"(.+?)\"/);
     if (!match) {
       channel.send(`Sorry ${mention(author.id)} but I don't understand your bet. :clenched: (!wager "wager id" bet integerAmount "valid option")`)
       return false;
@@ -46,6 +46,23 @@ export class Wager {
     return true;
   }
 
+  async declare({ content, author, channel }) {
+    //example: !wager "wagerid" declare "option1" "option2" "option3" "..."
+    if (this.options.length > 0) {
+      channel.send(`:eyes: This wager has already been declared ${mention(author.id)}.`);
+      return false;
+    }
+    const match = content.match(/declare\s+"(.+)"/);
+    const options = match[1].split(/"\s+"/);
+    if (options.length < 2) {
+      channel.send(`:eyes: You are going to need more than 1 option ${mention(author.id)}.`)
+      return false;
+    }
+    this.options = [...options];
+    channel.send(`:tada: Awesome ${mention(author.id)}. We have a new wager set! Anyone who wants in use \`!wager "${this.id}" bet integerAmount "option"\` Valid options: [${this.options.join(', ')}]`);
+    return true;
+  }
+
   async handle({ content, channel, author }) {
     const match = content.match(/\!wager \"(.+?)\"/) || [];
     const [, wagerid] = match;
@@ -53,7 +70,7 @@ export class Wager {
       channel.send(`:clenched: Sorry ${mention(author.id)}, I'm not sure what wager you are talking about.`);
       return false;
     }
-    const commandMatch = content.match(new RegExp(`\"${wagerid}\" (bet|winner|declare)`)) || [];
+    const commandMatch = content.match(new RegExp(`\"${wagerid}\"\s+(bet|winner|declare)`)) || [];
     const [, command] = commandMatch;
 
     console.table({ content, wagerid, command });
