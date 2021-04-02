@@ -272,12 +272,7 @@ ${Object.entries(jsonDB[serverId].houseStats.betTypes).map(([betType, { wins, lo
         jsonDB[serverId].houseStats.totalBets++;
         jsonDB[serverId].houseStats.totalBetAmount += player.bet;
         jsonDB[serverId][author.id].balance = jsonDB[serverId][author.id].balance - Number(amount);
-        if (!games[serverId].blackjack.messages.starting)
-          games[serverId].blackjack.messages.starting = await channel.send(`Starting in ${games[serverId].blackjack.startingIn} seconds. Place your bets to get in the game.
-Currently in the game:
-${games[serverId].blackjack.players.map(player => `<@${player.id}>`).join("\n")}`);
-        else
-          return games[serverId].blackjack.messages.starting = await games[serverId].blackjack.messages.starting.edit(`Starting in ${games[serverId].blackjack.startingIn} seconds. Place your bets to get in the game.
+        games[serverId].blackjack.messages.starting = await channel.send(`Starting in ${games[serverId].blackjack.startingIn} seconds. Place your bets to get in the game.
 Currently in the game:
 ${games[serverId].blackjack.players.map(player => `<@${player.id}>`).join("\n")}`);
 
@@ -337,6 +332,11 @@ ${games[serverId].blackjack.players.map(player => `<@${player.id}>`).join("\n")}
           jsonDB[serverId].houseStats.totalBets++;
           jsonDB[serverId].houseStats.totalBetAmount += player.bet;
           jsonDB[serverId][author.id].balance = jsonDB[serverId][author.id].balance - player.bet;
+
+          games[serverId].blackjack.messages.starting = await games[serverId].blackjack.messages.starting.edit(`Starting in ${games[serverId].blackjack.startingIn} seconds. Place your bets to get in the game.
+Currently in the game:
+${games[serverId].blackjack.players.map(player => `<@${player.id}>`).join("\n")}`);
+
           return channel.send(`Welcome to the game ${authorMention}.`);
         }
         if (games[serverId].blackjack.started) return channel.send(`Hold on ${authorMention}, there is a game in progress.`)
