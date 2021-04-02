@@ -53,7 +53,7 @@ export class Wager {
       return false;
     }
     const match = content.match(/declare\s+"(.+)"/);
-    const options = match[1].split(/"\s+"/);
+    const options = Array.from(new Set(match[1].split(/"\s+"/)));
     if (options.length < 2) {
       channel.send(`:eyes: You are going to need more than 1 option ${mention(author.id)}.`)
       return false;
