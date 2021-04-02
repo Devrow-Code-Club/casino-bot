@@ -25,6 +25,7 @@ export class Wager {
     }
     const [, amountString, choice] = match;
     if (!this.options.length) {
+      console.table(this.options);
       channel.send(`:clenched: This doesn't appear to be a current wager.`)
       return false;
     }
@@ -70,12 +71,10 @@ export class Wager {
       channel.send(`:clenched: Sorry ${mention(author.id)}, I'm not sure what wager you are talking about.`);
       return false;
     }
-    const commandRegexString = `\"${wagerid}\"\\s+(bet|winner|declare)`;
-    const commandRegex = new RegExp(commandRegexString);
-    const commandMatch = content.match(commandRegex) || [];
+    const commandMatch = content.match(new RegExp(`\"${wagerid}\"\\s+(bet|winner|declare)`)) || [];
     const [, command] = commandMatch;
 
-    console.table({ content, wagerid, command, commandRegexString });
+    console.table({ content, wagerid, command });
 
     if (!command) {
       channel.send(`:suspicious_eyes: And what do you want to do with "${wagerid}", ${mention(author.id)}?`);
