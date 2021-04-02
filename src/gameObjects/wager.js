@@ -59,7 +59,7 @@ export class Wager {
       return false;
     }
     this.options = [...options];
-    channel.send(`:tada: Awesome ${mention(author.id)}. We have a new wager set! Anyone who wants in use \`!wager "${this.id}" bet integerAmount "option"\` Valid options: [${this.options.join(', ')}]`);
+    channel.send(`:tada: Awesome ${mention(author.id)}. We have a new wager set! Anyone who wants in use \`!wager "${this.id}" bet integerAmount "option"\` Valid options: ["${this.options.join('", "')}"]`);
     return true;
   }
 

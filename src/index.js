@@ -463,7 +463,7 @@ ${games[serverId].blackjack.players.map(player => `<@${player.id}>`).join("\n")}
 
     if (result) {
       jsonDB[serverId].wagers[wagerid] = games[serverId].wagers[wagerid].serialized;
-      fs.writeFile(DBLOC, JSON.stringify(jsonDB));
+      // fs.writeFile(DBLOC, JSON.stringify(jsonDB));
     }
   }
 });
