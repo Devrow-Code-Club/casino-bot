@@ -70,11 +70,12 @@ export class Wager {
       channel.send(`:clenched: Sorry ${mention(author.id)}, I'm not sure what wager you are talking about.`);
       return false;
     }
-    const commandRegex = new RegExp(`\"${wagerid}\"\s+(bet|winner|declare)`);
+    const commandRegexString = `\"${wagerid}\"\s+(bet|winner|declare)`;
+    const commandRegex = new RegExp(commandRegexString);
     const commandMatch = content.match(commandRegex) || [];
     const [, command] = commandMatch;
 
-    console.table({ content, wagerid, command, commandRegex });
+    console.table({ content, wagerid, command, commandRegexString });
 
     if (!command) {
       channel.send(`:suspicious_eyes: And what do you want to do with "${wagerid}", ${mention(author.id)}?`);
