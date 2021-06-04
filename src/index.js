@@ -227,6 +227,7 @@ ${Object.entries(jsonDB[serverId].houseStats)
   ) {
     const rouletteCommands = content.split('\n');
     let messages = [];
+    let betMessages = [];
     for (const command of rouletteCommands) {
       if (ROULETTE_DOWN && serverId !== process.env.TESTSERVER)
         return channel.send(`Sorry, roulette is closed right now.`);
@@ -377,14 +378,14 @@ ${Object.entries(jsonDB[serverId].houseStats.betTypes)
             jsonDB[serverId][author.id].totals.largestBet,
             Number(amount),
           );
-          if (!messages)
-            messages.push(
+          if (!betMessages.length)
+            betMessages.push(
               `${authorMention} I have you for \`${betType}${
                 bet ? ` on ${bet}` : ''
               }\` for ${format(Number(amount))}.`,
             );
           else
-            messages.push(
+            betMessages.push(
               `And \`${betType}${bet ? ` on ${bet}` : ''}\` for ${format(Number(amount))}.`,
             );
           if (!jsonDB[serverId].houseStats.betTypes[betType])
@@ -401,8 +402,8 @@ ${Object.entries(jsonDB[serverId].houseStats.betTypes)
         } else messages.push(`Sorry ${authorMention} I'm not sure of the bet you are placing`);
       }
     }
-    console.log(messages);
-    if (messages) channel.send(messages.join('\n'));
+    const allMessages = messages.concat(bestMessages);
+    if (allMessages) channel.send(allMessages.join('\n'));
   }
   if (content.startsWith('!blackjack ') || content.startsWith('!bj ')) {
     //TODO: fix split blackjack
