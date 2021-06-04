@@ -402,7 +402,7 @@ ${Object.entries(jsonDB[serverId].houseStats.betTypes)
         } else messages.push(`Sorry ${authorMention} I'm not sure of the bet you are placing`);
       }
     }
-    const allMessages = messages.concat(bestMessages);
+    const allMessages = messages.concat(betMessages);
     if (allMessages) channel.send(allMessages.join('\n'));
   }
   if (content.startsWith('!blackjack ') || content.startsWith('!bj ')) {
