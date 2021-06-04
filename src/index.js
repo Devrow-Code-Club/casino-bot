@@ -377,7 +377,7 @@ ${Object.entries(jsonDB[serverId].houseStats.betTypes)
             jsonDB[serverId][author.id].totals.largestBet,
             Number(amount),
           );
-          if (!betMessages)
+          if (!messages)
             messages.push(
               `${authorMention} I have you for \`${betType}${
                 bet ? ` on ${bet}` : ''
