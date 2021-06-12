@@ -451,7 +451,7 @@ ${Object.entries(jsonDB[serverId].houseStats.betTypes)
       if (amount > jsonDB[serverId][author.id].balance)
         return channel.send(`You don't have that much ${authorMention}.`);
       if (!games[serverId].blackjack) {
-        games[serverId].blackjack = new BlackJack(DEV_MODE);
+        games[serverId].blackjack = new BlackJack(games[serverId].blackjackDeck, DEV_MODE);
         games[serverId].blackjack.onFreshDeck = () => {
           channel.send(`The dealer shuffles in a new deck.`);
         };
