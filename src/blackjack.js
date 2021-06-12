@@ -4,7 +4,8 @@ const { createCanvas, loadImage } = canvas;
 
 export class BlackJack {
   constructor(deck, devMode) {
-    this.deck = deck ?? this.freshDeck;
+    this.deck = Array.isArray(deck) ? deck : this.freshDeck;
+    console.log(this.deck);
     this.players = [];
     this.startWait = devMode ? 1 : 15;
     this.startTime = new Date();
