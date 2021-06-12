@@ -7,9 +7,9 @@ import { Wager } from './gameObjects/wager.js';
 import { Roulette } from './roulette.js';
 import { format } from './utils.js';
 
-const DEV_MODE = false;
-const BJ_DOWN = false;
-const ROULETTE_DOWN = false;
+const DEV_MODE = true;
+const BJ_DOWN = true;
+const ROULETTE_DOWN = true;
 const enableStonks = false;
 const DBLOC = './db/db.json';
 const games = {};
@@ -452,7 +452,10 @@ ${Object.entries(jsonDB[serverId].houseStats.betTypes)
         return channel.send(`You don't have that much ${authorMention}.`);
       if (!games[serverId].blackjack) {
         games[serverId].blackjack = new BlackJack(DEV_MODE);
-        let player = games[serverId].blackjack.addPlayer(author.id);
+        games[serverId].blackjack.onFreshDeck = () => {
+          channel.send(`The dealer shuffles in a new deck.`);
+        };
+        let player = games[serverId].blackjack.addPlayer(games[serverId].blackjackDeck, author.id);
         player.bet = Number(amount);
         jsonDB[serverId].houseStats.totalBets++;
         jsonDB[serverId].houseStats.totalBetAmount += player.bet;
@@ -681,6 +684,7 @@ ${games[serverId].blackjack.players.map(player => `<@${player.id}>`).join('\n')}
         });
       }
       fs.writeFile(DBLOC, JSON.stringify(jsonDB));
+      games[serverId].blackjackDeck = games[serverId].blackjack.deck;
       return delete games[serverId].blackjack;
     }
   }
