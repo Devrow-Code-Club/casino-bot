@@ -455,7 +455,7 @@ ${Object.entries(jsonDB[serverId].houseStats.betTypes)
         games[serverId].blackjack.onFreshDeck = () => {
           channel.send(`The dealer shuffles in a new deck.`);
         };
-        let player = games[serverId].blackjack.addPlayer(games[serverId].blackjackDeck, author.id);
+        let player = games[serverId].blackjack.addPlayer(author.id);
         player.bet = Number(amount);
         jsonDB[serverId].houseStats.totalBets++;
         jsonDB[serverId].houseStats.totalBetAmount += player.bet;
